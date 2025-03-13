@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/vacky/VackyAI/StarAI/VSCode/cpp/bin/add'
+relocations:     []
+...
