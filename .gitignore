@@ -1,42 +1,30 @@
-# Python 通用忽略规则
+# Python 编译 & 缓存
 __pycache__/
+*/__pycache__/
 *.py[cod]
+*.pyd
 *.so
 *.swp
 .DS_Store
 
-# Cursor / VS Code 相关文件
-.vscode/
-.idea/
-*.code-workspace
-.cursor/
+# 依赖管理
+Pipfile
+Pipfile.lock
+poetry.lock
+requirements.txt
+*.egg-info/
+*.whl
 
 # 虚拟环境
-venv/
+.venv/
 .env
 *.env
 
 # Jupyter Notebook 相关
 .ipynb_checkpoints/
 notebooks/.ipynb_checkpoints/
-
-# 依赖文件
-Pipfile
-Pipfile.lock
-poetry.lock
-requirements.txt
-
-# 数据 & 模型
-/data/raw/
-/data/processed/
-/data/models/
-*.csv
-*.parquet
-*.pkl
-*.h5
-*.json
-*.db
-*.sqlite
+*.nbconvert.ipynb
+*.nb.html
 
 # 运行日志 & 结果
 logs/
@@ -59,6 +47,7 @@ tests/__pycache__/
 .coverage
 pytest_cache/
 *.pytest_cache/
+.mypy_cache/
 
 # AI 相关文件
 checkpoints/
@@ -66,11 +55,25 @@ checkpoints/
 *.onnx
 *.tflite
 
+# 数据 & 模型
+/data/raw/
+/data/processed/
+/data/models/
+*.csv
+*.parquet
+*.pkl
+*.h5
+*.json
+*.db
+*.sqlite
+
+# IDE 相关
+.vscode/
+.idea/
+*.code-workspace
+.cursor/
+
 # 本地配置 & 临时文件
 local_settings.py
 config.yaml
 secrets.toml
-
-# Notebook 运行时输出
-*.nbconvert.ipynb
-*.nb.html
