@@ -41,10 +41,16 @@ def load_stock_data(symbol: str, start: str, end: str, max_retries: int = 5) -> 
             stock = yf.download(symbol, start=start, end=end)
             
             if not stock.empty:
-                logger.info(f"成功获取数据，数据形状：{stock.shape}")
-                logger.info(f"数据时间范围：{stock.index[0]} 到 {stock.index[-1]}")
+                logger.info(f"数据获取成功：{len(stock)} 条记录")
+                logger.info("\n数据信息：")
+                logger.info(f"数据列：{', '.join(stock.columns)}")
+                logger.info(f"数据类型：\n{stock.dtypes}")
+                logger.info("\n数据预览：")
+                print(stock.round(2))
+                logger.info("\n基本统计信息：")
+                print(stock.describe().round(2))
+                
                 stock['Return'] = stock['Close'].pct_change()
-                logger.info("已计算收益率")
                 return stock
             else:
                 logger.warning(f"获取到的数据为空")
