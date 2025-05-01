@@ -6,10 +6,10 @@ import yfinance as yf
 import time
 import random
 from typing import Optional
-from quant_ai.utils.logger import setup_logger
+from quant_ai.utils.logger.stock_logger import stock_logger
 
-# 配置日志
-logger = setup_logger(__name__)
+# 获取数据加载专用的日志记录器
+logger = stock_logger.get_data_loader_logger()
 
 def load_stock_data(symbol: str, start: str, end: str, max_retries: int = 5) -> pd.DataFrame:
     """获取股票历史数据

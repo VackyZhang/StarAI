@@ -1,40 +1,85 @@
-# Python 编译 & 缓存
+# ========================
+# 🐍 Python 缓存文件
+# ========================
 __pycache__/
 */__pycache__/
 *.py[cod]
 *.pyd
 *.so
 *.swp
-.DS_Store
+*.tmp
+*.bak
+*.orig
 
-# 依赖管理
-Pipfile
-Pipfile.lock
-poetry.lock
-requirements.txt
-*.egg-info/
-*.whl
-
-# 虚拟环境
+# ========================
+# 📦 虚拟环境和依赖文件
+# ========================
 .venv/
 .env
 *.env
+Pipfile
+Pipfile.lock
+poetry.lock
+*.egg-info/
+*.whl
 
-# Jupyter Notebook 相关
+# ========================
+# 📓 Jupyter Notebook 缓存
+# ========================
 .ipynb_checkpoints/
 notebooks/.ipynb_checkpoints/
 *.nbconvert.ipynb
 *.nb.html
 
-# 运行日志 & 结果
+# ========================
+# 🗂️ 数据相关（建议数据全忽略，仅手动上传示例）
+# ========================
+/data/raw/
+/data/processed/
+/data/models/
+/data/interim/
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.parquet
+*.pkl
+*.feather
+*.json
+*.h5
+*.db
+*.sqlite
+*.npy
+*.npz
+
+# ========================
+# 🤖 AI / 模型文件
+# ========================
+checkpoints/
+*.ckpt
+*.pt
+*.pth
+*.onnx
+*.tflite
+*.joblib
+*.model
+
+# ========================
+# 📊 日志、运行输出、结果
+# ========================
 logs/
 *.log
 *.out
-*.bak
 *.pid
 *.sock
+*.cache/
+*.metrics
+*.report
+*.stats
 
-# 生成的文档
+# ========================
+# 📄 文档构建缓存
+# ========================
 /docs/_build/
 /docs/*.aux
 /docs/*.log
@@ -42,38 +87,51 @@ logs/
 /docs/*.pdf
 /docs/*.out
 
-# 本地测试 & 测试缓存
+# ========================
+# 🧪 测试与静态分析工具缓存
+# ========================
 tests/__pycache__/
 .coverage
 pytest_cache/
 *.pytest_cache/
 .mypy_cache/
+.tox/
+.cache/
+coverage.xml
 
-# AI 相关文件
-checkpoints/
-*.ckpt
-*.onnx
-*.tflite
+# ========================
+# ⚙️ 本地配置 & 敏感信息
+# ========================
+local_settings.py
+config.yaml
+config/*.yaml
+config/*.json
+secrets.toml
+*.key
+*.pem
 
-# 数据 & 模型
-/data/raw/
-/data/processed/
-/data/models/
-*.csv
-*.parquet
-*.pkl
-*.h5
-*.json
-*.db
-*.sqlite
-
-# IDE 相关
+# ========================
+# 🛠️ IDE / 编辑器配置
+# ========================
 .vscode/
 .idea/
 *.code-workspace
 .cursor/
+*.iml
 
-# 本地配置 & 临时文件
-local_settings.py
-config.yaml
-secrets.toml
+# ========================
+# 🐳 Docker / 构建临时产物（如打包分发时）
+# ========================
+build/
+dist/
+*.egg
+*.tar.gz
+
+# ========================
+# 📦 第三方工具缓存（可选：MLFlow, TensorBoard, HuggingFace）
+# ========================
+runs/
+mlruns/
+wandb/
+.cache/huggingface/
+events.out.tfevents.*
