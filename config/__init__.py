@@ -1,33 +1,55 @@
 # config/__init__.py
-# 加载和统一管理所有 YAML 配置文件（base, strategy, backtest 等）
-# 可通过 base_config、strategy_config 等变量直接引用
-# 也支持 get_config('xxx') 动态访问配置
+# 配置管理模块：统一加载项目中的 YAML 配置文件（如 base.yaml、strategy.yaml 等）
+# 同时支持从 .env 文件中加载环境变量（如 TUSHARE_TOKEN），用于本地安全调试
+# 提供 base_config, strategy_config, tushare_token 等变量供各模块直接使用
 
 import os
 import yaml
+from dotenv import load_dotenv
 
+# === 加载 .env 文件（存放敏感信息） ===
+load_dotenv()
+
+# === 配置文件目录 ===
 CONFIG_DIR = os.path.dirname(__file__)
-CONFIG_FILES = ['base', 'strategy', 'backtest', 'trading', 'model']
+
+# === 要自动加载的 YAML 配置文件名（不含扩展名） ===
+CONFIG_FILES = [
+    'base',
+    'strategy',
+    'backtest',
+    'trading',
+    'model'
+]
+
+# === 配置字典容器 ===
 configs = {}
 
 def load_yaml_config(file_name: str) -> dict:
+    """
+    加载单个 YAML 配置文件为字典
+    """
     path = os.path.join(CONFIG_DIR, f"{file_name}.yaml")
     if not os.path.exists(path):
-        print(f"[config] Warning: config file not found: {file_name}.yaml")
+        print(f"[config] ⚠️ Warning: config file not found: {file_name}.yaml")
         return {}
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f) or {}
 
-# 自动加载所有配置文件
+# === 加载所有配置文件 ===
 for name in CONFIG_FILES:
     configs[name] = load_yaml_config(name)
 
-# 快捷访问
+# === 快捷访问接口 ===
 base_config = configs['base']
 strategy_config = configs['strategy']
 backtest_config = configs['backtest']
 trading_config = configs['trading']
 model_config = configs['model']
 
+# === 动态访问函数 ===
 def get_config(name: str) -> dict:
     return configs.get(name, {})
+
+# === 读取敏感信息（优先从 .env 获取） ===
+tushare_token = os.getenv("TUSHARE_TOKEN") or base_config.get("tushare_token", "")

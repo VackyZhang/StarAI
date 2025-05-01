@@ -1,2 +1,6 @@
 pandas
 pyyaml
+akshare
+tushare
+python-dotenv
+
