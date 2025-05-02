@@ -104,7 +104,6 @@ coverage.xml
 # ========================
 local_settings.py
 config.yaml
-config/*.yaml
 config/*.json
 secrets.toml
 *.key
