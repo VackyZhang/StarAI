@@ -1,0 +1,9 @@
+# config/model.yaml
+# 机器学习模型训练与预测相关配置（适用于模型驱动策略）
+
+model_type: xgboost
+params:
+  max_depth: 6
+  learning_rate: 0.05
+  n_estimators: 200
+model_save_path: models/xgb_model.pkl     # 模型保存路径

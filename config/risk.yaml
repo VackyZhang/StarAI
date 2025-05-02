@@ -1,0 +1,8 @@
+# config/risk.yaml
+# 风控参数配置，适用于回测或实盘交易时的风险控制逻辑
+
+max_drawdown: 0.2          # 最大允许回撤
+max_position: 0.5          # 最大仓位（0~1）
+daily_loss_limit: 0.05     # 单日最大亏损比例
+stop_loss_ratio: 0.03      # 单个交易止损比例
+stop_profit_ratio: 0.1     # 单个交易止盈比例

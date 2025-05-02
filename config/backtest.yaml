@@ -1,0 +1,9 @@
+# config/backtest.yaml
+# 回测相关配置，定义起止时间、初始资金、交易成本、基准指数等
+
+start_date: 2022-01-01          # 回测起始日期
+end_date: 2023-12-31            # 回测结束日期
+initial_cash: 100000            # 初始现金
+commission: 0.001               # 交易佣金（千分之1）
+slippage: 0.0005                # 模拟滑点（千分之0.5）
+benchmark: '000300.SH'         # 回测对比基准指数（沪深300）

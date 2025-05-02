@@ -1,0 +1,13 @@
+# config/base.yaml
+# 项目级别的全局配置，如数据目录、日志目录、默认数据源等
+
+project_name: StarAI
+log_dir: logs/                  # 日志输出目录
+data_dir: data/                 # 数据目录根路径
+timezone: Asia/Shanghai         # 时区设定
+
+# 数据来源配置：支持 'akshare' 或 'tushare'
+data_source: akshare
+
+# tushare_token 由 .env 文件优先读取；此处作为默认兜底
+tushare_token: ""

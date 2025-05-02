@@ -1,0 +1,9 @@
+# config/strategy.yaml
+# 策略参数配置，主要用于技术指标驱动类策略
+
+strategy_name: bollinger_band
+parameters:
+  period: 20                  # 布林带窗口周期
+  devfactor: 2.0              # 标准差倍数
+  stop_loss: 0.05             # 止损阈值（5%）
+  take_profit: 0.1            # 止盈阈值（10%）

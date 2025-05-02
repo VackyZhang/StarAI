@@ -1,0 +1,7 @@
+# config/trading.yaml
+# 实盘交易相关配置，包括接口设置、最大仓位、是否自动交易等
+
+broker: mock                      # 默认使用模拟交易模块
+api_token: your_token_here        # 券商接口密钥（真实环境下需保护）
+auto_trade: false                 # 是否自动交易（生产环境需开启）
+max_position_per_stock: 0.1       # 每只股票最大仓位占比（10%）
