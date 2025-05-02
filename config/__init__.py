@@ -1,17 +1,19 @@
-# config/__init__.py
-# 配置管理模块：统一加载项目中的 YAML 配置文件（如 base.yaml、strategy.yaml 等）
-# 同时支持从 .env 文件中加载环境变量（如 TUSHARE_TOKEN），用于本地安全调试
-# 提供 base_config, strategy_config, tushare_token 等变量供各模块直接使用
+"""
+配置管理模块：统一加载项目中的 YAML 配置文件（如 base.yaml、strategy.yaml 等）
+支持从 .env 文件加载环境变量（如 TUSHARE_TOKEN），用于本地安全调试。
+提供 base_config, strategy_config, tushare_token 等变量供各模块直接使用。
+"""
 
 import os
-import yaml
 from dotenv import load_dotenv
+from common.config_loader import load_yaml_config
+from common.logger import get_logger
+from common.paths import CONFIG_DIR
+
+logger = get_logger("Config")
 
 # === 加载 .env 文件（存放敏感信息） ===
 load_dotenv()
-
-# === 配置文件目录 ===
-CONFIG_DIR = os.path.dirname(__file__)
 
 # === 要自动加载的 YAML 配置文件名（不含扩展名） ===
 CONFIG_FILES = [
@@ -25,20 +27,14 @@ CONFIG_FILES = [
 # === 配置字典容器 ===
 configs = {}
 
-def load_yaml_config(file_name: str) -> dict:
-    """
-    加载单个 YAML 配置文件为字典
-    """
-    path = os.path.join(CONFIG_DIR, f"{file_name}.yaml")
-    if not os.path.exists(path):
-        print(f"[config] ⚠️ Warning: config file not found: {file_name}.yaml")
-        return {}
-    with open(path, "r", encoding="utf-8") as f:
-        return yaml.safe_load(f) or {}
-
 # === 加载所有配置文件 ===
 for name in CONFIG_FILES:
-    configs[name] = load_yaml_config(name)
+    try:
+        configs[name] = load_yaml_config(os.path.join(CONFIG_DIR, f"{name}.yaml"))
+        logger.info(f"[config] ✅ loaded: {name}.yaml")
+    except FileNotFoundError:
+        configs[name] = {}
+        logger.warning(f"[config] ⚠️ missing: {name}.yaml")
 
 # === 快捷访问接口 ===
 base_config = configs['base']
