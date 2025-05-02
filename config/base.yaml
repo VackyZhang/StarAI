@@ -4,6 +4,7 @@
 project_name: StarAI
 log_dir: logs/                  # 日志输出目录
 data_dir: data/                 # 数据目录根路径
+processed_dir: data/processed  # 添加此行
 timezone: Asia/Shanghai         # 时区设定
 
 # 数据来源配置：支持 'akshare' 或 'tushare'
