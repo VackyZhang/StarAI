@@ -3,4 +3,4 @@ pyyaml
 akshare
 tushare
 python-dotenv
-
+pytest
