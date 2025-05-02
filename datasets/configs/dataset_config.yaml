@@ -1,0 +1,3 @@
+# 数据路径配置
+processed_dir: data/processed
+raw_dir: data/raw
