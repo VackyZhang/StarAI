@@ -34,23 +34,23 @@ notebooks/.ipynb_checkpoints/
 # ========================
 # 🗂️ 数据相关（建议数据全忽略，仅手动上传示例）
 # ========================
-/data/raw/
-/data/processed/
-/data/models/
-/data/interim/
-*.csv
-*.tsv
-*.xlsx
-*.xls
-*.parquet
-*.pkl
-*.feather
-*.json
-*.h5
-*.db
-*.sqlite
-*.npy
-*.npz
+#/data/raw/
+#/data/processed/
+#/data/models/
+#/data/interim/
+#*.csv
+#*.tsv
+#*.xlsx
+#*.xls
+#*.parquet
+#*.pkl
+#*.feather
+#*.json
+#*.h5
+#*.db
+#*.sqlite
+#*.npy
+#*.npz
 
 # ========================
 # 🤖 AI / 模型文件
