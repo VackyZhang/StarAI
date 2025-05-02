@@ -1,7 +1,7 @@
 # 封装完整数据准备流程（读取 -> 预处理 -> 保存）
 import os
 import pandas as pd
-from prepare.preprocessor import fill_missing
+from data.prepare.preprocessor import fill_missing
 from config import base_config
 
 def prepare_stock(symbol: str, overwrite=False) -> pd.DataFrame:
