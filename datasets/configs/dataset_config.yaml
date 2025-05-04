@@ -1,3 +1,10 @@
 # 数据路径配置
 processed_dir: data/processed
 raw_dir: data/raw
+
+# MySQL 配置（用于 SQL 加载）
+mysql_config:
+  host: "localhost"
+  user: "your_user"
+  password: "your_password"
+  database: "your_database"
