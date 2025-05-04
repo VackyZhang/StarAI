@@ -66,6 +66,8 @@ strategy_config = _loader.get("strategy")
 backtest_config = _loader.get("backtest")
 trading_config  = _loader.get("trading")
 model_config    = _loader.get("model")
+# 新增导出 tushare_token
+tushare_token   = base_config.get("tushare_token", "")
 
 
 def get_config(name: str) -> dict:

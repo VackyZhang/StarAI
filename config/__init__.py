@@ -1,8 +1,6 @@
-# config/__init__.py
-
 """
 配置包：将 common.config_loader 中的接口导出，
-方便在 examples/ 或其它地方直接 `import config`。
+方便直接 `import config` 使用。
 """
 
 from common.config_loader import (
@@ -13,6 +11,7 @@ from common.config_loader import (
     model_config,
     get_config,
     load_yaml_config,
+    tushare_token,
 )
 
 __all__ = [
@@ -23,4 +22,5 @@ __all__ = [
     "model_config",
     "get_config",
     "load_yaml_config",
+    "tushare_token",
 ]
