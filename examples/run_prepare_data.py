@@ -1,19 +1,20 @@
-# 演示从下载到数据准备的完整流程（本地测试用）
-import os
+from config import base_config
 from data.download.download_stock import download_stock
 from data.prepare.prepare_stock import prepare_stock
-from config import base_config
 
-symbol = "000001.SZ"
-start = "2022-01-01"
-end = "2022-12-31"
+if __name__ == "__main__":
+    symbol = "000001.SZ"
+    start_date = "2023-01-05"
+    end_date = "2023-01-10"
 
-# 下载数据
-df_raw = download_stock(symbol, start, end)
-raw_dir = os.path.join(base_config["data_dir"], "raw")
-os.makedirs(raw_dir, exist_ok=True)
-df_raw.to_csv(os.path.join(raw_dir, f"{symbol}.csv"), index=False)
+    base_config["data_source"] = "tushare"  # 强制使用 tushare
 
-# 数据准备（填充缺失值）
-df_ready = prepare_stock(symbol, overwrite=True)
-print(df_ready.head())
+    print(f"[Download] 下载 {symbol} 数据...")
+    csv_path = download_stock(symbol, start_date, end_date, overwrite=True)
+    if not csv_path:
+        print("[❌] 下载失败，跳过清洗流程")
+        exit()
+
+    print(f"[Prepare] 清洗 {symbol} 数据...")
+    df = prepare_stock(symbol, overwrite=True)
+    print(df.head())
