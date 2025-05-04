@@ -1,14 +1,33 @@
 # config/base.yaml
-# 项目级别的全局配置，如数据目录、日志目录、默认数据源等
+# === 全局基础配置 ===
 
+# 项目与环境
 project_name: StarAI
-log_dir: logs/                  # 日志输出目录
-data_dir: data/                 # 数据目录根路径
-processed_dir: data/processed  # 添加此行
-timezone: Asia/Shanghai         # 时区设定
+environment: development       # 可选：development | testing | production
+random_seed: 42               # 全局随机种子
 
-# 数据来源配置：支持 'akshare' 或 'tushare'
-data_source: akshare
+# 时区设置（用于调度、日志时间戳等）
+timezone: Asia/Shanghai       
 
-# tushare_token 由 .env 文件优先读取；此处作为默认兜底
-tushare_token: ""
+# 日志配置
+log_level: INFO               # DEBUG | INFO | WARNING | ERROR | CRITICAL
+log_dir: logs/                # 日志输出目录
+
+# === 数据路径配置 ===
+data_dir: data/               # 数据目录根路径
+raw_dir: data/raw/            # 原始数据（下载后未经处理）
+interim_dir: data/interim/    # 中间数据（清洗/合并后的产物）
+processed_dir: data/processed/ # 训练/回测使用的最终数据
+external_dir: data/external/  # 第三方静态文件（如行业分类、基准收益）
+metadata_dir: data/metadata/  # 数据字典、schema 及版本说明
+
+# === 模型路径配置 ===
+models_dir: models/                   # 模型存放根目录
+checkpoint_dir: models/checkpoints/   # 训练过程中保存的检查点
+final_model_dir: models/final/        # 训练完成后的最终模型文件
+
+# === 数据源与凭证 ===
+# 支持 'akshare' 或 'tushare'
+data_source: akshare  
+# tushare_token 由 .env 文件优先读取；以下作为默认兜底
+tushare_token: "" 

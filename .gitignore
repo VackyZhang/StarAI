@@ -32,42 +32,43 @@ notebooks/.ipynb_checkpoints/
 *.nb.html
 
 # ========================
-# 🗂️ 数据相关（建议数据全忽略，仅手动上传示例）
+# 🗂️ 数据相关（仅保留 metadata，小文件示例可手动加入）
 # ========================
-#/data/raw/
-#/data/processed/
-#/data/models/
-#/data/interim/
-#*.csv
-#*.tsv
-#*.xlsx
-#*.xls
-#*.parquet
-#*.pkl
-#*.feather
-#*.json
-#*.h5
-#*.db
-#*.sqlite
-#*.npy
-#*.npz
+# 原始数据与中间/处理产物
+/data/raw/
+/data/interim/
+/data/processed/
+/data/external/
+/data/models/
+/*.csv
+/*.tsv
+/*.xlsx
+/*.xls
+/*.parquet
+/*.pkl
+/*.feather
+/*.json
+/*.h5
+/*.db
+/*.sqlite
+/*.npy
+/*.npz
+
+# 仅保留 metadata 目录中的说明文件
+!data/metadata/
+!data/metadata/README.md
 
 # ========================
 # 🤖 AI / 模型文件
 # ========================
-checkpoints/
-*.ckpt
-*.pt
-*.pth
-*.onnx
-*.tflite
-*.joblib
-*.model
+models/
+!models/README.md
 
 # ========================
 # 📊 日志、运行输出、结果
 # ========================
 logs/
+tests/output/
 *.log
 *.out
 *.pid
@@ -90,14 +91,16 @@ logs/
 # ========================
 # 🧪 测试与静态分析工具缓存
 # ========================
-tests/__pycache__/
+.pytest_cache/
+*.pytest_cache/
+coverage.xml
 .coverage
 pytest_cache/
-*.pytest_cache/
 .mypy_cache/
 .tox/
 .cache/
-coverage.xml
+# 如果 tests 里有 output 子目录
+tests/output/
 
 # ========================
 # ⚙️ 本地配置 & 敏感信息
@@ -115,11 +118,11 @@ secrets.toml
 .vscode/
 .idea/
 *.code-workspace
-.cursor/
 *.iml
+.cursor/
 
 # ========================
-# 🐳 Docker / 构建临时产物（如打包分发时）
+# 🐳 Docker / 构建临时产物
 # ========================
 build/
 dist/
@@ -134,3 +137,8 @@ mlruns/
 wandb/
 .cache/huggingface/
 events.out.tfevents.*
+
+# ========================
+# 📦 其他临时或包信息
+# ========================
+starai.egg-info/
