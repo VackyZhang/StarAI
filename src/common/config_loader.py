@@ -1,5 +1,5 @@
 """
-配置加载模块：读取 src/config/*.yaml 和 .env，然后标准化关键字段。
+配置加载模块：读取项目根 config/*.yaml 和 .env，然后标准化关键字段。
 同时，提供一个独立的 load_yaml_config 工具函数。
 """
 
@@ -7,10 +7,10 @@ import os
 from pathlib import Path
 import yaml
 
-from common.paths import PROJECT_ROOT, CONFIG_DIR as CONFIG_DIR_STR
+from common.paths import PROJECT_ROOT
 
-# 内部使用 Path 版的 CONFIG_DIR
-_CONFIG_DIR = Path(CONFIG_DIR_STR)
+# 指向项目根下的 config 目录
+_CONFIG_DIR = PROJECT_ROOT / "config"
 
 
 class ConfigLoader:
@@ -19,6 +19,7 @@ class ConfigLoader:
         if env_file and env_file.exists():
             from dotenv import load_dotenv
             load_dotenv(str(env_file))
+
         self.configs = {}
         self._load_all()
 
@@ -36,21 +37,15 @@ class ConfigLoader:
 
         # 解析 data_dir
         data_dir = Path(base.get("data_dir", PROJECT_ROOT / "data"))
-        base["data_dir"] = (
-            PROJECT_ROOT / data_dir
-        ) if not data_dir.is_absolute() else data_dir
+        base["data_dir"] = (PROJECT_ROOT / data_dir) if not data_dir.is_absolute() else data_dir
 
         # 解析 processed_dir
         processed = Path(base.get("processed_dir", PROJECT_ROOT / "data" / "processed"))
-        base["processed_dir"] = (
-            PROJECT_ROOT / processed
-        ) if not processed.is_absolute() else processed
+        base["processed_dir"] = (PROJECT_ROOT / processed) if not processed.is_absolute() else processed
 
         # 解析 log_dir
         log_dir = Path(base.get("log_dir", PROJECT_ROOT / "logs"))
-        base["log_dir"] = (
-            PROJECT_ROOT / log_dir
-        ) if not log_dir.is_absolute() else log_dir
+        base["log_dir"] = (PROJECT_ROOT / log_dir) if not log_dir.is_absolute() else log_dir
 
         # 时区
         base["timezone"] = base.get("timezone", "UTC")
@@ -64,7 +59,7 @@ class ConfigLoader:
         return self.configs.get(name, {})
 
 
-# 单例化 ConfigLoader
+# 单例化
 _loader = ConfigLoader(env_file=PROJECT_ROOT / ".env")
 base_config     = _loader.get("base")
 strategy_config = _loader.get("strategy")
@@ -75,7 +70,7 @@ model_config    = _loader.get("model")
 
 def get_config(name: str) -> dict:
     """
-    动态获取某一配置字典，配置名如 "base", "strategy" 等。
+    动态获取某一配置字典，name 应为：base、strategy、backtest、trading 或 model
     """
     return _loader.get(name)
 
