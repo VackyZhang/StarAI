@@ -4,21 +4,25 @@
 配置管理模块：加载和管理量化交易框架的所有配置文件，包括回测配置、模型配置等。
 """
 
-import os
-from common.config_loader import load_yaml_config
-from common.paths import CONFIG_DIR
+from pathlib import Path
 from dotenv import load_dotenv
 
-# 加载 .env 文件中的环境变量
+from common.config_loader import load_yaml_config
+from common.paths import CONFIG_DIR
+
+# 加载 .env 文件中的环境变量（如 TUSHARE_TOKEN）
 load_dotenv()
 
+# 将 config 路径转换为 Path 对象
+CONFIG_DIR_PATH = Path(CONFIG_DIR)
+
 # 配置文件路径
-BASE_CONFIG_PATH = os.path.join(CONFIG_DIR, "base.yaml")
-STRATEGY_CONFIG_PATH = os.path.join(CONFIG_DIR, "strategy.yaml")
-BACKTEST_CONFIG_PATH = os.path.join(CONFIG_DIR, "backtest.yaml")
-TRADING_CONFIG_PATH = os.path.join(CONFIG_DIR, "trading.yaml")
-MODEL_CONFIG_PATH = os.path.join(CONFIG_DIR, "model.yaml")
-RISK_CONFIG_PATH = os.path.join(CONFIG_DIR, "risk.yaml")
+BASE_CONFIG_PATH = CONFIG_DIR_PATH / "base.yaml"
+STRATEGY_CONFIG_PATH = CONFIG_DIR_PATH / "strategy.yaml"
+BACKTEST_CONFIG_PATH = CONFIG_DIR_PATH / "backtest.yaml"
+TRADING_CONFIG_PATH = CONFIG_DIR_PATH / "trading.yaml"
+MODEL_CONFIG_PATH = CONFIG_DIR_PATH / "model.yaml"
+RISK_CONFIG_PATH = CONFIG_DIR_PATH / "risk.yaml"
 
 # 加载各配置文件
 base_config = load_yaml_config(BASE_CONFIG_PATH)
