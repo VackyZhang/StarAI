@@ -1,29 +1,28 @@
-# quant_ai/core/report.py
-
 """
-回测报告模块：用于统计策略表现并输出指标。
+回测报告模块：处理回测结果，生成统计报告。
 """
 
 import pandas as pd
-from typing import Dict
+from common.logger import get_logger
+
+logger = get_logger("Report")
 
 class ReportGenerator:
-    def __init__(self, trades: pd.DataFrame):
-        self.trades = trades
+    def __init__(self, config=None):
+        self.config = config or {}
 
-    def generate_summary(self) -> Dict:
-        """
-        生成基本回测统计信息
-        """
-        pnl = self.trades["pnl"].sum()
-        total_trades = len(self.trades)
-        win_rate = (self.trades["pnl"] > 0).mean()
+    def generate(self, trades: pd.DataFrame) -> dict:
+        if trades.empty:
+            logger.warning("⚠️ 无交易记录，无法生成报告。")
+            return {}
 
-        return {
-            "Total PnL": round(pnl, 2),
-            "Number of Trades": total_trades,
-            "Win Rate": round(win_rate * 100, 2)
+        total = trades["trade"].sum()
+        count = trades["trade"].count()
+        report = {
+            "total_profit": total,
+            "trade_count": count,
+            "average_trade": total / count if count > 0 else 0
         }
 
-    def to_dataframe(self) -> pd.DataFrame:
-        return self.trades.copy()
+        logger.info(f"📊 回测报告: {report}")
+        return report
