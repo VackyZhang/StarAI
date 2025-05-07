@@ -1,3 +1,5 @@
+# tests/quant_ai/core/test_report.py
+
 import pandas as pd
 from quant_ai.core.report import ReportGenerator
 
@@ -9,4 +11,7 @@ def test_generate_report(tmp_path):
     })
     generator = ReportGenerator()
     report = generator.generate(trades, save_path=tmp_path / "report.csv")
-    assert report["returns"].shape[0] == trades.shape[0]
+
+    assert isinstance(report, pd.DataFrame)
+    assert "total_trades" in report.columns
+    assert (tmp_path / "report.csv").exists()
