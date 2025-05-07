@@ -1,17 +1,18 @@
+# quant_ai/core/strategy.py
+
 """
-策略模块：定义基础策略框架及具体实现，用于生成交易信号。
+策略模块：定义策略接口和基础示例实现。
 """
 
-from quant_ai.config import strategy_config
+import pandas as pd
+from common.logger import get_logger
+
+logger = get_logger("Strategy")
 
 class BaseStrategy:
-    def __init__(self, config=None):
-        self.config = config or strategy_config
+    def __init__(self):
+        pass
 
-    def generate_signal(self, data_row):
-        raise NotImplementedError("请实现 generate_signal 方法")
-
-class Strategy(BaseStrategy):
-    def generate_signal(self, data_row):
-        price = data_row["close"]
-        return 1 if price > 100 else -1
+    def generate_signals(self, data: pd.DataFrame) -> pd.Series:
+        logger.info("⚙️ 生成固定信号（买入=1）")
+        return pd.Series(1, index=data.index)  # 示例策略：全买入

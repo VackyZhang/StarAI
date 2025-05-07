@@ -1,34 +1,39 @@
+# quant_ai/core/backtest.py
+
 """
-回测模块：执行基于历史数据的策略回测流程，包括初始化、数据加载、策略执行、结果收集等。
+回测模块：执行完整的策略回测流程，连接数据加载、信号生成、执行、结果分析。
 """
 
-from common.logger import get_logger
-from quant_ai.core.strategy import Strategy
+from quant_ai.core.strategy import BaseStrategy
 from quant_ai.core.execution import ExecutionEngine
 from quant_ai.core.report import ReportGenerator
 from quant_ai.config import backtest_config
 from quant_ai.data.loader import load_data
+from common.logger import get_logger
 
 logger = get_logger("Backtest")
 
 class BacktestEngine:
-    def __init__(self, config=None):
-        self.config = config or backtest_config
-        self.strategy = Strategy()
+    def __init__(self, strategy: BaseStrategy = None):
+        self.config = backtest_config
+        self.strategy = strategy or BaseStrategy()
         self.execution = ExecutionEngine()
-        self.report_generator = ReportGenerator()
+        self.report = ReportGenerator()
 
     def run(self):
-        logger.info("📈 启动回测流程...")
+        symbol = self.config.get("symbol", "000001.SZ")
+        start = self.config.get("start_date")
+        end = self.config.get("end_date")
 
-        symbol = self.config["symbol"]
-        df = load_data(symbol=symbol, start=self.config["start_date"], end=self.config["end_date"])
+        logger.info(f"📈 开始回测: {symbol} {start}~{end}")
+        df = load_data(symbol=symbol, start=start, end=end)
         if df.empty:
-            logger.error("❌ 数据加载失败，终止回测。")
-            return
+            logger.error("❌ 数据加载失败")
+            return None
 
-        signals = df["close"].apply(self.strategy.generate_signal)
+        signals = self.strategy.generate_signals(df)
         trades = self.execution.execute(df, signals)
-        self.report_generator.generate(trades)
+        report = self.report.generate(trades)
 
-        logger.info("✅ 回测完成。")
+        logger.info("✅ 回测完成")
+        return report

@@ -1,30 +1,21 @@
 # quant_ai/__init__.py
 
 """
-量化AI框架：集成量化交易的核心模块，包括数据处理、策略执行、风险管理与交易等。
+quant_ai 包初始化模块：统一导出核心模块接口，便于外部使用。
 """
 
-from .core import (
-    backtest,
-    execution,
-    report,
-    strategy
-)
-
-from .data import (
-    datasource,
-    loader,
-    preprocessor
-)
-
+from . import config
+from .core import BacktestEngine, BaseStrategy, ExecutionEngine, ReportGenerator
+from .data import datasource, loader, preprocessor
 from .risk import risk_manager
 from .trading import broker_base, jqdatasdk, mock
 
 __all__ = [
-    "backtest",
-    "execution",
-    "report",
-    "strategy",
+    "config",
+    "BacktestEngine",
+    "BaseStrategy",
+    "ExecutionEngine",
+    "ReportGenerator",
     "datasource",
     "loader",
     "preprocessor",
