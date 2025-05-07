@@ -1,10 +1,9 @@
-# quant_ai/data/__init__.py
-from .datasource import download_stock
-from .loader import load_data
+from .datasource import DataSource
+from .loader import DataLoader
 from .preprocessor import DataPreprocessor
 
 __all__ = [
-    "download_stock",
-    "load_data",
+    "DataSource",
+    "DataLoader",
     "DataPreprocessor",
 ]
