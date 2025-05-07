@@ -1,25 +1,66 @@
-# src/quant_ai/data/loader.py
+# quant_ai/data/loader.py
 
 """
-数据加载模块：为策略回测和训练提供数据支持。
+数据加载模块：统一封装常见数据格式的加载逻辑，支持 CSV、Parquet、JSON、Pickle、Feather 等。
 """
 
+import os
 import pandas as pd
-from pathlib import Path
-from common.paths import DATA_PROCESSED_DIR
+from common.logger import get_logger
 
-def load_data(symbol: str, split: str = "train") -> pd.DataFrame:
+logger = get_logger("DataLoader")
+
+
+def load_data(
+    path_or_buffer,
+    file_type: str = None,
+    **kwargs
+) -> pd.DataFrame:
     """
-    加载预处理后的数据。
+    通用数据加载函数。
 
     参数:
-        symbol (str): 股票代码，如 '000001.SZ'
-        split (str): 数据集分割（train, val, test）
+        path_or_buffer (str or buffer or pd.DataFrame): 文件路径、文件对象或内存数据
+        file_type (str): 文件类型（可选，如果未提供则自动根据文件后缀推断）
+        kwargs: 透传给具体读取函数的参数
 
     返回:
-        pd.DataFrame: 加载的数据
+        pd.DataFrame: 加载后的数据
     """
-    file_path = Path(DATA_PROCESSED_DIR) / symbol / f"{split}.csv"
-    if not file_path.exists():
-        raise FileNotFoundError(f"未找到数据文件: {file_path}")
-    return pd.read_csv(file_path)
+    if isinstance(path_or_buffer, pd.DataFrame):
+        logger.info("📄 输入为 DataFrame，直接返回。")
+        return path_or_buffer.copy()
+
+    if not isinstance(path_or_buffer, str):
+        raise ValueError("path_or_buffer 必须是 str、文件对象或 DataFrame。")
+
+    path = path_or_buffer
+    if not os.path.exists(path):
+        logger.error(f"❌ 路径不存在: {path}")
+        return pd.DataFrame()
+
+    # 自动推断文件类型
+    ext = os.path.splitext(path)[-1].lower()
+    file_type = file_type or ext.lstrip(".")
+
+    try:
+        if file_type in ["csv"]:
+            df = pd.read_csv(path, **kwargs)
+        elif file_type in ["parquet"]:
+            df = pd.read_parquet(path, **kwargs)
+        elif file_type in ["json"]:
+            df = pd.read_json(path, **kwargs)
+        elif file_type in ["pkl", "pickle"]:
+            df = pd.read_pickle(path, **kwargs)
+        elif file_type in ["feather"]:
+            df = pd.read_feather(path, **kwargs)
+        else:
+            logger.error(f"⚠️ 不支持的文件类型: {file_type}")
+            return pd.DataFrame()
+
+        logger.info(f"✅ 成功加载数据: {path} ({file_type})，行数: {len(df)}")
+        return df
+
+    except Exception as e:
+        logger.exception(f"⚠️ 加载数据失败: {e}")
+        return pd.DataFrame()
