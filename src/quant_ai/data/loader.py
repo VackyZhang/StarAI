@@ -6,6 +6,7 @@
 
 import pandas as pd
 from pathlib import Path
+from typing import Union
 from common.logger import get_logger
 from common.file_utils import load_csv, load_parquet, load_json
 
@@ -16,7 +17,7 @@ class DataLoader:
     def __init__(self):
         pass
 
-    def load(self, source, fmt="csv", **kwargs) -> pd.DataFrame:
+    def load(self, source: Union[str, Path, pd.DataFrame], fmt: str = "csv", **kwargs) -> pd.DataFrame:
         """
         加载指定格式的数据文件或结构。
 
@@ -27,18 +28,28 @@ class DataLoader:
         返回:
             pd.DataFrame: 加载的数据
         """
-        logger.info(f"📥 加载数据，格式={fmt}，路径/对象={source}")
+        logger.info(f"📥 加载数据 => 格式={fmt} | 来源={type(source).__name__} | 值={source}")
 
         if fmt == "csv":
             return load_csv(source, **kwargs)
+
         elif fmt == "parquet":
             return load_parquet(source, **kwargs)
+
         elif fmt == "json":
-            return load_json(source, **kwargs)
+            data = load_json(source, **kwargs)
+            if isinstance(data, list):
+                return pd.DataFrame(data)
+            elif isinstance(data, dict):
+                return pd.DataFrame([data])
+            else:
+                raise ValueError("load_json 返回值无法转换为 DataFrame")
+
         elif fmt == "dataframe":
             if isinstance(source, pd.DataFrame):
                 return source.copy()
             else:
-                raise ValueError("源对象不是有效的 DataFrame")
+                raise TypeError("格式为 'dataframe' 时，source 必须是 pd.DataFrame 实例")
+
         else:
-            raise ValueError(f"不支持的数据格式: {fmt}")
+            raise ValueError(f"❌ 不支持的数据格式: {fmt}")

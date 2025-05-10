@@ -10,7 +10,7 @@ from quant_ai.core.strategy import BaseStrategy
 from quant_ai.core.execution import ExecutionEngine
 from quant_ai.core.report import ReportGenerator
 from quant_ai.config import backtest_config
-from quant_ai.data.loader import load_data
+from quant_ai.data.loader import DataLoader  # ✅ 更新导入
 
 logger = get_logger("Backtest")
 
@@ -36,7 +36,7 @@ class BacktestEngine:
         end = self.config["end_date"]
 
         logger.info(f"📊 加载数据: {symbol} ({start} ~ {end})")
-        self.data = load_data(symbol=symbol, start=start, end=end)
+        self.data = DataLoader().load(symbol=symbol, start=start, end=end)  # ✅ 使用统一封装接口
 
     def run_backtest(self):
         """

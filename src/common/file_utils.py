@@ -1,5 +1,5 @@
 """
-文件工具模块：封装常用的数据文件读取与保存操作，支持 CSV / JSON / Pickle。
+文件工具模块：封装常用的数据文件读取与保存操作，支持 CSV / JSON / Pickle / Parquet。
 """
 
 import os
@@ -50,3 +50,16 @@ def load_pickle(path: str) -> object:
         raise FileNotFoundError(f"找不到文件: {path}")
     with open(path, "rb") as f:
         return pickle.load(f)
+
+
+def save_parquet(df: pd.DataFrame, path: str, index: bool = False) -> None:
+    """保存 DataFrame 为 Parquet 文件"""
+    ensure_dir(os.path.dirname(path))
+    df.to_parquet(path, index=index)
+
+
+def load_parquet(path: str) -> pd.DataFrame:
+    """加载 Parquet 文件为 DataFrame"""
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"找不到文件: {path}")
+    return pd.read_parquet(path)
