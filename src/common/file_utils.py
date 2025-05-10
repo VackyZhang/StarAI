@@ -26,7 +26,8 @@ def save_json(obj: dict, path: str, indent: int = 2, ensure_ascii: bool = False)
     """保存对象为 JSON 文件"""
     ensure_dir(os.path.dirname(path))
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(obj, f, indent=indent, ensure_ascii=ensure_ascii)
+        # ✅ 添加 default=str 以支持 Timestamp 等对象序列化
+        json.dump(obj, f, indent=indent, ensure_ascii=ensure_ascii, default=str)
 
 
 def load_json(path: str) -> dict:
@@ -63,3 +64,4 @@ def load_parquet(path: str) -> pd.DataFrame:
     if not os.path.exists(path):
         raise FileNotFoundError(f"找不到文件: {path}")
     return pd.read_parquet(path)
+

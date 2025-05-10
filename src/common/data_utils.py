@@ -13,7 +13,7 @@ def fill_missing(df: pd.DataFrame, method: str = "ffill") -> pd.DataFrame:
 
     参数:
         df: 输入的 DataFrame。
-        method: 填充方法，支持 'ffill', 'bfill', 'mean', 'median', 'mode'。
+        method: 填充方法，支持 'ffill', 'bfill', 'mean', 'median', 'mode', 'zero'。
 
     返回:
         填充后的 DataFrame。
@@ -28,6 +28,8 @@ def fill_missing(df: pd.DataFrame, method: str = "ffill") -> pd.DataFrame:
         return df.fillna(df.median(numeric_only=True))
     elif method == "mode":
         return df.fillna(df.mode().iloc[0])
+    elif method == "zero":
+        return df.fillna(0)
     else:
         raise ValueError(f"不支持的填充方法: {method}")
 
@@ -72,3 +74,4 @@ def standardize(df: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
         else:
             df[col] = (df[col] - mean) / std
     return df
+
